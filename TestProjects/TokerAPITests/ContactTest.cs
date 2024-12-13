@@ -2,17 +2,17 @@ using NUnit.Framework;
 using System.Net.Http;
 using System.Net.Http.Json;
 using Microsoft.AspNetCore.Mvc.Testing;
-//using TokerAPI;
 
 
-namespace TokerAPITests;
+
+namespace TokerAPITest;
     public class ContactTest
 {
     //private readonly HttpClient _client;
-    //private readonly WebApplicationFactory<TokerAPITests.Startup> _factory;
+    //private readonly CustomWebApplicationFactory<Program> _factory;
 
     public ContactTest() {
-        //_factory = new WebApplicationFactory<TokerAPI.Startup>();
+       // _factory = new CustomWebApplicationFactory<Program>();
         //_client = _factory.CreateClient();
     }
 
