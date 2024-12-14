@@ -1,25 +1,33 @@
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging; 
+using Microsoft.Extensions.Logging;
 
 
 [ApiController]
 [Route("api/[controller]")]
-public class ContactController : ControllerBase {
+public class ContactController : ControllerBase
+{
 
     private readonly ILogger<ContactController> _logger;
+    private readonly ApplicationDbContext _context;
 
-    public ContactController(ILogger<ContactController> logger){
+    public ContactController(ILogger<ContactController> logger, ApplicationDbContext context)
+    {
         _logger = logger;
+        _context = context;
     }
 
     [HttpPost("sendcontact")]
-    public IActionResult CreateContact ([FromBody] Contact contact)
+    public async Task<IActionResult> CreateContact([FromBody] Contact contact)
     {
-        if (contact == null)
+        if (!ModelState.IsValid)
         {
-            return BadRequest("Contact Info cant be null.");
+            return BadRequest(ModelState);
         }
+
+        _context.Contacts.Add(contact);
+        await _context.SaveChangesAsync();
         _logger.LogInformation("Contacto llegado desde el POST -> Nombre: {ContactName} -  Telefono: {ContactPhone}", contact.ContactName, contact.ContactPhone);
-        return Ok(new { Message = "Registration Succesfully"});
+        //return CreatedAtAction(nameof(CreateContact), new { id = contact.Id }, contact);
+        return Ok(new { Message = "Registration Succesfully" });
     }
 }
